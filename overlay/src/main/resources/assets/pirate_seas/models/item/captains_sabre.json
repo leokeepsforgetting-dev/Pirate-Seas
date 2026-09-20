@@ -1,0 +1,4 @@
+{
+ "parent":"pirate_seas:item/cutlass",
+ "textures":{"metal":"minecraft:block/iron_block","wood":"minecraft:block/dark_oak_planks","gold":"minecraft:block/gold_block"}
+}
