@@ -23,19 +23,12 @@ jobs:
         with:
           gradle-version: '8.8'
 
-      - name: Extract project
-        run: |
-          rm -rf build-src
-          mkdir build-src
-          unzip -q PirateSeas-v0.4.0-project.zip -d build-src
-
       - name: Build Forge mod
-        working-directory: build-src
         run: gradle --no-daemon clean build --stacktrace
 
       - name: Upload playable JAR
         uses: actions/upload-artifact@v4
         with:
           name: PirateSeas-Forge-1.20.1
-          path: build-src/build/libs/*.jar
+          path: build/libs/*.jar
           if-no-files-found: error
