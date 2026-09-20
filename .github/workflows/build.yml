@@ -12,6 +12,9 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -27,12 +30,20 @@ jobs:
         with:
           gradle-version: '8.8'
 
+      - name: Rebuild Pirate Seas project
+        run: |
+          cat tar_chunks/chunk_00.txt tar_chunks/chunk_01.txt tar_chunks/chunk_02.txt tar_chunks/chunk_03.txt > PirateSeas-project.tar.gz.b64
+          base64 -d PirateSeas-project.tar.gz.b64 > PirateSeas-project.tar.gz
+          mkdir build-src
+          tar -xzf PirateSeas-project.tar.gz -C build-src
+
       - name: Build Forge mod
+        working-directory: build-src
         run: gradle --no-daemon clean build --stacktrace
 
       - name: Upload playable JAR
         uses: actions/upload-artifact@v4
         with:
           name: PirateSeas-Forge-1.20.1
-          path: build/libs/*.jar
+          path: build-src/build/libs/*.jar
           if-no-files-found: error
